@@ -4,12 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+require('dotenv').config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.get('/', (req, res) => {
-    return res.status(200).send('Server Live.');
+    res.status(200).send('Server up. Send POST request to /totalPrice with input fields in body.');
 });
 app.post('/totalPrice', (req, res) => {
+    console.log(req.body);
     const input = req.body;
     const { mileage, congestionCharge, driverTime, numberOfFloor, lateCharge, carbonOffSet, vanType, } = input;
     // confirm that all inputs are defined:
@@ -74,6 +76,7 @@ app.post('/totalPrice', (req, res) => {
         mileage * perMileFare;
     res.status(200).json({ totalPrice: price });
 });
-app.listen(4000, () => {
-    console.log('Server up on port 4000');
+const port = process.env.PORT;
+app.listen(port, () => {
+    console.log(`Server up at port ${port}`);
 });

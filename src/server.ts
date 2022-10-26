@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+require('dotenv').config();
+
 interface Input {
   mileage: number;
   congestionCharge: 'yes' | 'no';
@@ -14,10 +16,11 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
-  return res.status(200).send('Server Live.');
+  res.status(200).send('Server up. Send POST request to /totalPrice with input fields in body.');
 });
 
 app.post('/totalPrice', (req: Request, res: Response) => {
+  console.log(req.body);
   const input: Input = req.body;
   const {
     mileage,
@@ -109,6 +112,7 @@ app.post('/totalPrice', (req: Request, res: Response) => {
   res.status(200).json({ totalPrice: price });
 });
 
-app.listen(4000, () => {
-  console.log('Server up on port 4000');
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`Server up at port ${port}`);
 });
