@@ -35,7 +35,7 @@ app.post('/totalPrice', (req, res) => {
         return res.status(403).send('Invalid inputs.');
     }
     // proceed with request
-    const unitFloorCost = 15;
+    const unitFloorCost = 7.5;
     const congestionCost = congestionCharge === 'yes' ? 15 : 0;
     const helperTimeChargePerHour = 20;
     const driverTimeCostPerHour = {
@@ -65,7 +65,9 @@ app.post('/totalPrice', (req, res) => {
     }
     // to the nearest 0.5 multiple in hours:
     totalTime = Math.round((totalTime / 60) * 2) / 2;
+    console.log('Total time: ', totalTime);
     const driverCharge = driverTimeCostPerHour[vanType] * totalTime;
+    console.log('driver charge: ', driverCharge);
     const helperCharge = helperTimeChargePerHour * totalTime;
     const price = driverCharge +
         helperCharge +
